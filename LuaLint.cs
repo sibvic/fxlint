@@ -42,7 +42,67 @@ namespace fxlint
         {
             switch (indicatorName)
             {
+                case "AC":
+                case "AD":
+                case "ADX":
+                case "ALLIGATOR":
+                case "AO":
+                case "AROON":
+                case "ARSI":
+                case "ASI":
+                case "ATR":
+                case "BB":
+                case "CCI":
+                case "CHO":
+                case "CMF":
+                case "CMO":
+                case "DIRECTIONAL_REAL_VOLUME":
+                case "DMI":
+                case "EMA":
+                case "EQUITYANDBALANCEVIEW":
+                case "EW":
+                case "EWN":
+                case "EWO":
+                case "FRACTAL":
+                case "GATOR":
+                case "GSI":
+                case "HA":
+                case "ICH":
+                case "KAGI":
+                case "KAMA":
+                case "KRI":
+                case "LWMA":
+                case "MACD":
+                case "MAE":
+                case "MARKET_MOVERS_INDEX":
+                case "MD":
                 case "MVA":
+                case "OBOS":
+                case "OBV":
+                case "ON_BALANCE_REAL_VOLUME":
+                case "OSC":
+                case "PIVOT":
+                case "POINT_AND_FIGURE":
+                case "PPMA":
+                case "REAL VOLUME":
+                case "REGRESSION":
+                case "RENKO_CANDLES":
+                case "RLW":
+                case "ROC":
+                case "RSI":
+                case "SAR":
+                case "SFK":
+                case "SHOWTIMETOEND":
+                case "SMMA":
+                case "SSD":
+                case "STOCHASTIC":
+                case "TMA":
+                case "TMACD":
+                case "TRANSACTIONS":
+                case "TSI":
+                case "VIDYA":
+                case "WMA":
+                case "ZIGZAG":
                     return true;
             }
             return false;
