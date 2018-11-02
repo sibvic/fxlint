@@ -32,7 +32,7 @@ namespace fxlint
                 if (IsStandardIndicator(indicatorName.Trim().Trim('"')))
                     continue;
                 Regex indicatorAssertPattern = new Regex("assert\\(core\\.indicators:findIndicator\\(" + indicatorName + "\\) ~= nil");
-                if (!indicatorAssertPattern.IsMatch(code))
+                if (!indicatorAssertPattern.IsMatch(code) && !missingChecks.Contains(indicatorName))
                     missingChecks.Add(indicatorName);
             }
             return missingChecks.ToArray();
