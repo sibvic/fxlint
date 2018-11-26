@@ -13,12 +13,31 @@ namespace fxlint
                 warnings.Add("Old version of ParseTime");
             if (ContainsOldTradingTimeCheck(code))
                 warnings.Add("Old version of trading time check (not via InRange)");
+            if (ContainsNoPrecisionForOscullator(code))
+                warnings.Add("No precision for oscillator stream");
             string[] missingIndicatorChecks = GetMissingIndicatorChecks(code);
             foreach (var missingIndicatorCheck in missingIndicatorChecks)
             {
                 warnings.Add("Missing indicator assert for " + missingIndicatorCheck);
             }
             return warnings.ToArray();
+        }
+
+        static Regex streamCreatePattern = new Regex("(?<streamName>[^ =]+) *= *instance:create\\(,");
+        static bool ContainsNoPrecisionForOscullator(string code)
+        {
+            if (!code.Contains("core.Oscillator"))
+                return false;
+
+            var matches = indicatorCreatePattern.Matches(code);
+            foreach (Match match in matches)
+            {
+                var streamName = match.Groups["streamName"].Value;
+                if (!code.Contains(streamName + ":setPrecision"))
+                    return true;
+            }
+
+            return false;
         }
 
         static Regex indicatorCreatePattern = new Regex("indicators:create\\((?<indiName>[^,]+),");

@@ -18,6 +18,9 @@ namespace fxlint
                     PrintWarnings(file, warnings);
                     log.Add("\n=== " + file + " ===");
                     log.AddRange(warnings);
+                    // var target = Path.Combine(".", "mario", Path.GetFileName(file));
+                    // if (!File.Exists(target))
+                    //     System.IO.File.Copy(file, target);
                 }
             }
             File.WriteAllLines("fxlint_log.txt", log.ToArray());
