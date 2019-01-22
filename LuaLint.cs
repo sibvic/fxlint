@@ -29,8 +29,10 @@ namespace fxlint
         {
             if (!code.Contains("strategy:name("))
                 return false;
+            if (code.Contains("core.FLAG_ALLOW_TRADE"))
+                return false;
 
-            return !code.Contains("core.FLAG_ALLOW_TRADE");
+            return code.Contains("terminal:execute");
         }
 
         static Regex streamCreatePattern = new Regex("(?<streamName>[^ =]+) *= *instance:create\\(,");
