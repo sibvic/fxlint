@@ -34,7 +34,15 @@ namespace fxlint
 
         private static string[] GetWarnings(string file)
         {
-            string code = File.ReadAllText(file);
+            string code;
+            try
+            {
+                code = File.ReadAllText(file);
+            }
+            catch (Exception ex)
+            {
+                return new string[] { ex.Message };
+            }
             switch (Path.GetExtension(file).ToUpper())
             {
                 case ".LUA":
