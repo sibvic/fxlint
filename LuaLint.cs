@@ -15,12 +15,22 @@ namespace fxlint
                 warnings.Add("Old version of trading time check (not via InRange)");
             if (ContainsNoPrecisionForOscullator(code))
                 warnings.Add("No precision for oscillator stream");
+            if (ContainsNoAllowTrade(code))
+                warnings.Add("No allow trade");
             string[] missingIndicatorChecks = GetMissingIndicatorChecks(code);
             foreach (var missingIndicatorCheck in missingIndicatorChecks)
             {
                 warnings.Add("Missing indicator assert for " + missingIndicatorCheck);
             }
             return warnings.ToArray();
+        }
+
+        static bool ContainsNoAllowTrade(string code)
+        {
+            if (!code.Contains("strategy:name("))
+                return false;
+
+            return !code.Contains("core.FLAG_ALLOW_TRADE");
         }
 
         static Regex streamCreatePattern = new Regex("(?<streamName>[^ =]+) *= *instance:create\\(,");
