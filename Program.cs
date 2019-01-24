@@ -9,7 +9,7 @@ namespace fxlint
         static void Main(string[] args)
         {
             var files = Directory.GetFiles(".", "*.lua", SearchOption.AllDirectories);
-            if (args[0] == "--fix")
+            if (args.Length > 0 && args[0] == "--fix")
             {
                 foreach (var file in files)
                 {

@@ -74,6 +74,8 @@ namespace fxlint
             var fixedCode = code;
             if (ContainsNoAllowTrade(fixedCode))
                 fixedCode = FixNoAllowTrade(fixedCode);
+            if (GetMissingIndicatorChecks(fixedCode).Length > 0)
+                fixedCode = FixMissingIndicatorChecks(fixedCode);
 
             return fixedCode;
         }
@@ -87,11 +89,48 @@ namespace fxlint
                 var indicatorName = match.Groups["indiName"].Value;
                 if (IsStandardIndicator(indicatorName.Trim().Trim('"')))
                     continue;
-                Regex indicatorAssertPattern = new Regex("assert\\(core\\.indicators:findIndicator\\(" + indicatorName + "\\) ~= nil");
-                if (!indicatorAssertPattern.IsMatch(code) && !missingChecks.Contains(indicatorName))
+                Regex indicatorAssertPattern = new Regex("core\\.indicators:findIndicator\\(" + indicatorName + "\\) ~= nil");
+                if (indicatorAssertPattern.IsMatch(code))
+                    continue;
+                Regex indicatorAssertPattern2 = new Regex("EnsureIndicatorInstalled\\(" + indicatorName + "\\)");
+                if (indicatorAssertPattern2.IsMatch(code))
+                    continue;
+                if (!missingChecks.Contains(indicatorName))
                     missingChecks.Add(indicatorName);
             }
             return missingChecks.ToArray();
+        }
+
+        private static string FixMissingIndicatorChecks(string code)
+        {
+            var lines = new List<string>();
+            lines.AddRange(code.Split('\n'));
+
+            var matches = indicatorCreatePattern.Matches(code);
+            var fixedIndicators = new List<string>();
+            foreach (Match match in matches)
+            {
+                var indicatorName = match.Groups["indiName"].Value;
+                if (IsStandardIndicator(indicatorName.Trim().Trim('"')) || fixedIndicators.Contains(indicatorName))
+                    continue;
+                Regex indicatorAssertPattern = new Regex("core\\.indicators:findIndicator\\(" + indicatorName + "\\) ~= nil");
+                if (indicatorAssertPattern.IsMatch(code))
+                    continue;
+                Regex indicatorAssertPattern2 = new Regex("EnsureIndicatorInstalled\\(" + indicatorName + "\\)");
+                if (indicatorAssertPattern2.IsMatch(code))
+                    continue;
+                for (int i = 0; i < lines.Count; ++i)
+                {
+                    var indicatorCreateMatch = indicatorCreatePattern.Match(lines[i]);
+                    if (indicatorCreateMatch.Success && indicatorCreateMatch.Groups["indiName"].Value == indicatorName)
+                    {
+                        lines.Insert(i, string.Format("    assert(core.indicators:findIndicator({0}) ~= nil, {0} .. \" indicator must be installed\");", indicatorName));
+                        fixedIndicators.Add(indicatorName);
+                        break;
+                    }
+                }                
+            }
+            return string.Join('\n', lines);
         }
 
         private static bool IsStandardIndicator(string indicatorName)
