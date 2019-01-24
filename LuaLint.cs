@@ -35,6 +35,21 @@ namespace fxlint
             return code.Contains("terminal:execute");
         }
 
+        static string FixNoAllowTrade(string code)
+        {
+            var lines = new List<string>();
+            lines.AddRange(code.Split('\n'));
+            for (int i = 0; i < lines.Count; ++i)
+            {
+                if (lines[i].Contains("parameters:addBoolean(\"AllowTrade\""))
+                {
+                    lines.Insert(i, "    strategy.parameters:setFlag(\"AllowTrade\", core.FLAG_ALLOW_TRADE);");
+                    return string.Join('\n', lines);
+                }
+            }
+            return code;
+        }
+
         static Regex streamCreatePattern = new Regex("(?<streamName>[^ =]+) *= *instance:create\\(,");
         static bool ContainsNoPrecisionForOscullator(string code)
         {
@@ -53,6 +68,16 @@ namespace fxlint
         }
 
         static Regex indicatorCreatePattern = new Regex("indicators:create\\((?<indiName>[^,]+),");
+
+        internal static string FixCode(string code)
+        {
+            var fixedCode = code;
+            if (ContainsNoAllowTrade(fixedCode))
+                fixedCode = FixNoAllowTrade(fixedCode);
+
+            return fixedCode;
+        }
+
         private static string[] GetMissingIndicatorChecks(string code)
         {
             List<string> missingChecks = new List<string>();
