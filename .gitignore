@@ -1,2 +1,4 @@
-fxlint_tests/bin
-fxlint_tests/obj
+﻿/.vs/
+/.vscode
+/fxlint_tests/bin
+/fxlint_tests/obj

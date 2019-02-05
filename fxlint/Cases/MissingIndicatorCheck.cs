@@ -12,7 +12,7 @@ namespace fxlint.Cases
         {
             if (IsStandardIndicator(indicatorName.Trim('"')))
                 return true;
-            var name = indicatorName.Replace("[", "\\[").Replace("(", "\\(").Replace(")", "\\)");
+            var name = indicatorName.Replace("[", "\\[").Replace("(", "\\(").Replace(")", "\\)").Replace("+", "\\+");
             Regex indicatorAssertPattern = new Regex("core\\.indicators:findIndicator\\( *" + name + "\\) ~= nil");
             if (indicatorAssertPattern.IsMatch(code))
                 return true;
