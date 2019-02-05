@@ -1,14 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace fxlint.Cases
 {
-    class MissingIndicatorCheck : ILintCheck
+    public class MissingIndicatorCheck : ILintCheck
     {
         static Regex indicatorCreatePattern = new Regex("indicators:create\\((?<indiName>[^,]+),");
+
+        bool IsCheckPresent(string code, string indicatorName)
+        {
+            if (IsStandardIndicator(indicatorName.Trim('"')))
+                return true;
+            var name = indicatorName.Replace("[", "\\[").Replace("(", "\\(").Replace(")", "\\)");
+            Regex indicatorAssertPattern = new Regex("core\\.indicators:findIndicator\\( *" + name + "\\) ~= nil");
+            if (indicatorAssertPattern.IsMatch(code))
+                return true;
+            Regex indicatorAssertPattern2 = new Regex("EnsureIndicatorInstalled\\( *" + name + "\\)");
+            if (indicatorAssertPattern2.IsMatch(code))
+                return true;
+            return false;
+        }
 
         public string Fix(string code)
         {
@@ -19,14 +31,10 @@ namespace fxlint.Cases
             var fixedIndicators = new List<string>();
             foreach (Match match in matches)
             {
-                var indicatorName = match.Groups["indiName"].Value;
-                if (IsStandardIndicator(indicatorName.Trim().Trim('"')) || fixedIndicators.Contains(indicatorName))
+                var indicatorName = match.Groups["indiName"].Value.Trim();
+                if (IsCheckPresent(code, indicatorName))
                     continue;
-                Regex indicatorAssertPattern = new Regex("core\\.indicators:findIndicator\\(" + indicatorName + "\\) ~= nil");
-                if (indicatorAssertPattern.IsMatch(code))
-                    continue;
-                Regex indicatorAssertPattern2 = new Regex("EnsureIndicatorInstalled\\(" + indicatorName + "\\)");
-                if (indicatorAssertPattern2.IsMatch(code))
+                if (fixedIndicators.Contains(indicatorName))
                     continue;
                 for (int i = 0; i < lines.Count; ++i)
                 {
@@ -118,14 +126,8 @@ namespace fxlint.Cases
             var matches = indicatorCreatePattern.Matches(code);
             foreach (Match match in matches)
             {
-                var indicatorName = match.Groups["indiName"].Value;
-                if (IsStandardIndicator(indicatorName.Trim().Trim('"')))
-                    continue;
-                Regex indicatorAssertPattern = new Regex("core\\.indicators:findIndicator\\(" + indicatorName + "\\) ~= nil");
-                if (indicatorAssertPattern.IsMatch(code))
-                    continue;
-                Regex indicatorAssertPattern2 = new Regex("EnsureIndicatorInstalled\\(" + indicatorName + "\\)");
-                if (indicatorAssertPattern2.IsMatch(code))
+                var indicatorName = match.Groups["indiName"].Value.Trim();
+                if (IsCheckPresent(code, indicatorName))
                     continue;
                 if (!missingChecks.Contains(indicatorName))
                     missingChecks.Add(indicatorName);
