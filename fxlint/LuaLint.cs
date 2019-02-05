@@ -14,13 +14,12 @@ namespace fxlint
             _cases.Add(new InRangeUse());
             _cases.Add(new MissingIndicatorCheck());
             _cases.Add(new ConvertTimeTZServer());
+            _cases.Add(new OldTradingTimeCheck());
         }
 
         public static string[] GetWarnings(string code)
         {
             List<string> warnings = new List<string>();
-            if (ContainsOldParseTime(code))
-                warnings.Add("Old version of ParseTime");
             foreach (var lintCase in _cases)
             {
                 var lintWarnings = lintCase.GetWarnings(code);
@@ -88,12 +87,6 @@ namespace fxlint
             }
 
             return fixedCode;
-        }
-        
-        static Regex oldParseTimePattern = new Regex("local Pos ?= ?string\\.find\\(time, ?\":\"\\);[ ]*\r\n[ ]*local");
-        private static bool ContainsOldParseTime(string code)
-        {
-            return oldParseTimePattern.IsMatch(code);
         }
     }
 }

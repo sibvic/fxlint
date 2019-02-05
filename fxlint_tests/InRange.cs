@@ -34,6 +34,34 @@ function ParseTime(time)
 
       if not InRange(now, OpenTime, CloseTime) then  
 ";
+        #region ParseTime
+        private const string oldParseTimeSnippet = @"function ParseTime(time)
+    local Pos = string.find(time, "":"");
+    local h = tonumber(string.sub(time, 1, Pos - 1));
+        time = string.sub(time, Pos + 1);
+        Pos = string.find(time, "":"");
+        local m = tonumber(string.sub(time, 1, Pos - 1));
+        local s = tonumber(string.sub(time, Pos + 1));
+    return (h / 24.0 +  m / 1440.0 + s / 86400.0),                          -- time in ole format
+           ((h >= 0 and h < 24 and m >= 0 and m < 60 and s >= 0 and s < 60) or(h == 24 and m == 0 and s == 0)); -- validity flag
+end";
+        [TestMethod]
+        public void OldParseTimeDetect()
+        {
+            OldPraseTime check = new OldPraseTime();
+            var warnings = check.GetWarnings(oldParseTimeSnippet);
+            Assert.AreEqual(1, warnings.Length);
+        }
+
+        [TestMethod]
+        public void OldParseTimeFix()
+        {
+            OldPraseTime check = new OldPraseTime();
+            var fixedCode = check.Fix(oldParseTimeSnippet);
+            Assert.AreEqual(true, fixedCode.Contains(@"local pos = string.find(time, "":"");
+    if pos == nil then"));
+        }
+        #endregion
 
         #region Time conversion
         private const string timeConversionSnippet = "now = core.host:execute (\"convertTime\", core.TZ_SERVER, ToTime, now);";
