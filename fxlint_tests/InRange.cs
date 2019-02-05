@@ -35,6 +35,26 @@ function ParseTime(time)
       if not InRange(now, OpenTime, CloseTime) then  
 ";
 
+        #region Time conversion
+        private const string timeConversionSnippet = "now = core.host:execute (\"convertTime\", core.TZ_SERVER, ToTime, now);";
+
+        [TestMethod]
+        public void TimeConversionDetect()
+        {
+            ConvertTimeTZServer check = new ConvertTimeTZServer();
+            var warnings = check.GetWarnings(timeConversionSnippet);
+            Assert.AreEqual(1, warnings.Length);
+        }
+
+        [TestMethod]
+        public void TimeConversionFix()
+        {
+            ConvertTimeTZServer check = new ConvertTimeTZServer();
+            var fixedCode = check.Fix(timeConversionSnippet);
+            Assert.AreEqual("now = core.host:execute(\"convertTime\", core.TZ_EST, ToTime, now);", fixedCode);
+        }
+        #endregion
+
         [TestMethod]
         public void InRangePresentDetect()
         {
