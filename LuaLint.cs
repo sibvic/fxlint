@@ -12,6 +12,7 @@ namespace fxlint
         {
             _cases.Add(new OldTradingTimeCheck());
             _cases.Add(new InRangeUse());
+            _cases.Add(new MissingIndicatorCheck());
         }
 
         public static string[] GetWarnings(string code)
@@ -28,11 +29,6 @@ namespace fxlint
                 warnings.Add("No precision for oscillator stream");
             if (ContainsNoAllowTrade(code))
                 warnings.Add("No allow trade");
-            string[] missingIndicatorChecks = GetMissingIndicatorChecks(code);
-            foreach (var missingIndicatorCheck in missingIndicatorChecks)
-            {
-                warnings.Add("Missing indicator assert for " + missingIndicatorCheck);
-            }
             return warnings.ToArray();
         }
 
@@ -85,8 +81,6 @@ namespace fxlint
             var fixedCode = code;
             if (ContainsNoAllowTrade(fixedCode))
                 fixedCode = FixNoAllowTrade(fixedCode);
-            if (GetMissingIndicatorChecks(fixedCode).Length > 0)
-                fixedCode = FixMissingIndicatorChecks(fixedCode);
             foreach (var lintCase in _cases)
             {
                 fixedCode = lintCase.Fix(fixedCode);
@@ -94,130 +88,7 @@ namespace fxlint
 
             return fixedCode;
         }
-
-        private static string[] GetMissingIndicatorChecks(string code)
-        {
-            List<string> missingChecks = new List<string>();
-            var matches = indicatorCreatePattern.Matches(code);
-            foreach (Match match in matches)
-            {
-                var indicatorName = match.Groups["indiName"].Value;
-                if (IsStandardIndicator(indicatorName.Trim().Trim('"')))
-                    continue;
-                Regex indicatorAssertPattern = new Regex("core\\.indicators:findIndicator\\(" + indicatorName + "\\) ~= nil");
-                if (indicatorAssertPattern.IsMatch(code))
-                    continue;
-                Regex indicatorAssertPattern2 = new Regex("EnsureIndicatorInstalled\\(" + indicatorName + "\\)");
-                if (indicatorAssertPattern2.IsMatch(code))
-                    continue;
-                if (!missingChecks.Contains(indicatorName))
-                    missingChecks.Add(indicatorName);
-            }
-            return missingChecks.ToArray();
-        }
-
-        private static string FixMissingIndicatorChecks(string code)
-        {
-            var lines = new List<string>();
-            lines.AddRange(code.Split('\n'));
-
-            var matches = indicatorCreatePattern.Matches(code);
-            var fixedIndicators = new List<string>();
-            foreach (Match match in matches)
-            {
-                var indicatorName = match.Groups["indiName"].Value;
-                if (IsStandardIndicator(indicatorName.Trim().Trim('"')) || fixedIndicators.Contains(indicatorName))
-                    continue;
-                Regex indicatorAssertPattern = new Regex("core\\.indicators:findIndicator\\(" + indicatorName + "\\) ~= nil");
-                if (indicatorAssertPattern.IsMatch(code))
-                    continue;
-                Regex indicatorAssertPattern2 = new Regex("EnsureIndicatorInstalled\\(" + indicatorName + "\\)");
-                if (indicatorAssertPattern2.IsMatch(code))
-                    continue;
-                for (int i = 0; i < lines.Count; ++i)
-                {
-                    var indicatorCreateMatch = indicatorCreatePattern.Match(lines[i]);
-                    if (indicatorCreateMatch.Success && indicatorCreateMatch.Groups["indiName"].Value == indicatorName)
-                    {
-                        lines.Insert(i, string.Format("    assert(core.indicators:findIndicator({0}) ~= nil, {0} .. \" indicator must be installed\");", indicatorName));
-                        fixedIndicators.Add(indicatorName);
-                        break;
-                    }
-                }                
-            }
-            return string.Join('\n', lines);
-        }
-
-        private static bool IsStandardIndicator(string indicatorName)
-        {
-            switch (indicatorName)
-            {
-                case "AC":
-                case "AD":
-                case "ADX":
-                case "ALLIGATOR":
-                case "AO":
-                case "AROON":
-                case "ARSI":
-                case "ASI":
-                case "ATR":
-                case "BB":
-                case "CCI":
-                case "CHO":
-                case "CMF":
-                case "CMO":
-                case "DIRECTIONAL_REAL_VOLUME":
-                case "DMI":
-                case "EMA":
-                case "EQUITYANDBALANCEVIEW":
-                case "EW":
-                case "EWN":
-                case "EWO":
-                case "FRACTAL":
-                case "GATOR":
-                case "GSI":
-                case "HA":
-                case "ICH":
-                case "KAGI":
-                case "KAMA":
-                case "KRI":
-                case "LWMA":
-                case "MACD":
-                case "MAE":
-                case "MARKET_MOVERS_INDEX":
-                case "MD":
-                case "MVA":
-                case "OBOS":
-                case "OBV":
-                case "ON_BALANCE_REAL_VOLUME":
-                case "OSC":
-                case "PIVOT":
-                case "POINT_AND_FIGURE":
-                case "PPMA":
-                case "REAL VOLUME":
-                case "REGRESSION":
-                case "RENKO_CANDLES":
-                case "RLW":
-                case "ROC":
-                case "RSI":
-                case "SAR":
-                case "SFK":
-                case "SHOWTIMETOEND":
-                case "SMMA":
-                case "SSD":
-                case "STOCHASTIC":
-                case "TMA":
-                case "TMACD":
-                case "TRANSACTIONS":
-                case "TSI":
-                case "VIDYA":
-                case "WMA":
-                case "ZIGZAG":
-                    return true;
-            }
-            return false;
-        }
-
+        
         static Regex oldParseTimePattern = new Regex("local Pos ?= ?string\\.find\\(time, ?\":\"\\);[ ]*\r\n[ ]*local");
         private static bool ContainsOldParseTime(string code)
         {
