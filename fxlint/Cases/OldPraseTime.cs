@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace fxlint.Cases
 {
@@ -25,18 +22,18 @@ namespace fxlint.Cases
     local pos = string.find(time, "":"");
     if pos == nil then
         return nil, false;
-            end
-            local h = tonumber(string.sub(time, 1, pos - 1));
-            time = string.sub(time, pos + 1);
-            pos = string.find(time, "":"");
-            if pos == nil then
+    end
+    local h = tonumber(string.sub(time, 1, pos - 1));
+    time = string.sub(time, pos + 1);
+    pos = string.find(time, "":"");
+    if pos == nil then
         return nil, false;
-            end
-            local m = tonumber(string.sub(time, 1, pos - 1));
-            local s = tonumber(string.sub(time, pos + 1));
-            return (h / 24.0 + m / 1440.0 + s / 86400.0),                          --time in ole format
-                 ((h >= 0 and h< 24 and m >= 0 and m< 60 and s >= 0 and s< 60) or(h == 24 and m == 0 and s == 0)); --validity flag
- end");
+    end
+    local m = tonumber(string.sub(time, 1, pos - 1));
+    local s = tonumber(string.sub(time, pos + 1));
+    return (h / 24.0 + m / 1440.0 + s / 86400.0),                          --time in ole format
+            ((h >= 0 and h< 24 and m >= 0 and m< 60 and s >= 0 and s< 60) or(h == 24 and m == 0 and s == 0)); --validity flag
+end");
         }
 
         public string[] GetWarnings(string code)

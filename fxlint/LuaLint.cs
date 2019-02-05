@@ -15,6 +15,7 @@ namespace fxlint
             _cases.Add(new MissingIndicatorCheck());
             _cases.Add(new ConvertTimeTZServer());
             _cases.Add(new OldTradingTimeCheck());
+            _cases.Add(new OldPraseTime());
         }
 
         public static string[] GetWarnings(string code)
