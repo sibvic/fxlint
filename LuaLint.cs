@@ -1,3 +1,4 @@
+using fxlint.Cases;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -6,13 +7,23 @@ namespace fxlint
 {
     class LuaLint
     {
+        static List<ILintCheck> _cases = new List<ILintCheck>();
+        static LuaLint()
+        {
+            _cases.Add(new OldTradingTimeCheck());
+            _cases.Add(new InRangeUse());
+        }
+
         public static string[] GetWarnings(string code)
         {
             List<string> warnings = new List<string>();
             if (ContainsOldParseTime(code))
                 warnings.Add("Old version of ParseTime");
-            if (ContainsOldTradingTimeCheck(code))
-                warnings.Add("Old version of trading time check (not via InRange)");
+            foreach (var lintCase in _cases)
+            {
+                var lintWarnings = lintCase.GetWarnings(code);
+                warnings.AddRange(lintWarnings);
+            }
             if (ContainsNoPrecisionForOscullator(code))
                 warnings.Add("No precision for oscillator stream");
             if (ContainsNoAllowTrade(code))
@@ -76,6 +87,10 @@ namespace fxlint
                 fixedCode = FixNoAllowTrade(fixedCode);
             if (GetMissingIndicatorChecks(fixedCode).Length > 0)
                 fixedCode = FixMissingIndicatorChecks(fixedCode);
+            foreach (var lintCase in _cases)
+            {
+                fixedCode = lintCase.Fix(fixedCode);
+            }
 
             return fixedCode;
         }
@@ -201,12 +216,6 @@ namespace fxlint
                     return true;
             }
             return false;
-        }
-
-        static Regex oldTradingTimeCheckPattern = new Regex("if not\\(now ?>= ?OpenTime(\n\r)?[^a]*and now ?<= ?CloseTime\\)");
-        private static bool ContainsOldTradingTimeCheck(string code)
-        {
-            return oldTradingTimeCheckPattern.IsMatch(code);
         }
 
         static Regex oldParseTimePattern = new Regex("local Pos ?= ?string\\.find\\(time, ?\":\"\\);[ ]*\r\n[ ]*local");

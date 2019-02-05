@@ -53,17 +53,26 @@ namespace fxlint
             {
                 return;
             }
-            switch (Path.GetExtension(file).ToUpper())
+            try
             {
-                case ".LUA":
-                    {
-                        var newCode = LuaLint.FixCode(code);
-                        if (newCode != code)
+
+                switch (Path.GetExtension(file).ToUpper())
+                {
+                    case ".LUA":
                         {
-                            File.WriteAllText(file, newCode);
+                            var newCode = LuaLint.FixCode(code);
+                            if (newCode != code)
+                            {
+                                File.WriteAllText(file, newCode);
+                            }
                         }
-                    }
-                    break;
+                        break;
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine(file);
+                throw;
             }
         }
 
