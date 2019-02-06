@@ -63,6 +63,39 @@ end";
         }
         #endregion
 
+        #region Old InRange
+        private const string oldInRangeSnippet = @"function InRange(now)
+    if OpenTime<CloseTime then
+        return now >= OpenTime and now <= CloseTime;
+    end
+    if OpenTime > CloseTime then
+        return now > OpenTime or now<CloseTime;
+    end
+    return now == OpenTime;
+end
+
+    if not InRange(now) then
+        return ;
+    end
+";
+        [TestMethod]
+        public void OldInRangeDetect()
+        {
+            var check = new OldInRange();
+            var warnings = check.GetWarnings(oldInRangeSnippet);
+            Assert.AreEqual(1, warnings.Length);
+        }
+
+        [TestMethod]
+        public void OldInRangeFix()
+        {
+            var check = new OldInRange();
+            var fixedCode = check.Fix(oldInRangeSnippet);
+            Assert.AreEqual(true, fixedCode.Contains("function InRange(now, openTime, closeTime)"));
+            Assert.AreEqual(true, fixedCode.Contains("InRange(now, OpenTime, CloseTime)"));
+        }
+        #endregion
+
         #region Time conversion
         private const string timeConversionSnippet = "now = core.host:execute (\"convertTime\", core.TZ_SERVER, ToTime, now);";
 
