@@ -7,14 +7,14 @@ namespace fxlint.Cases
 {
     public class NoPrecisionForOscillator : ILintCheck
     {
-        static Regex _pattern = new Regex("(?<streamName>[^ =]+)[\t\r\n ]*=[\t\r\n ]*instance:addStream\\(");
+        static Regex _pattern = new Regex("(?<streamName>[^\t\r\n =]+)[\t\r\n ]*=[\t\r\n ]*instance:addStream\\(");
         public string Fix(string code)
         {
             List<string> names = GetNames(code);
             var fixedCode = code;
             foreach (var name in names)
             {
-                Regex pattern = new Regex(name + "[\t\r\n ]*=[\t\r\n ]*instance:addStream\\(");
+                Regex pattern = new Regex(name.Replace("[", "\\[").Replace("]", "\\]") + "[\t\r\n ]*=[\t\r\n ]*instance:addStream\\(");
                 var match = pattern.Match(fixedCode);
                 if (match.Success)
                 {
