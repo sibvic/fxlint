@@ -19,7 +19,7 @@ namespace fxlint.Cases
                 if (match.Success)
                 {
                     int index = FindIndexOfNextLine(fixedCode, match.Groups[0].Index);
-                    fixedCode = fixedCode.Insert(index, "    " + name + ":setPrecision(math.max(2, instance.source:getPrecision()));");
+                    fixedCode = fixedCode.Insert(index, "    " + name + ":setPrecision(math.max(2, instance.source:getPrecision()));\n");
                 }
             }
 

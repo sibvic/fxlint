@@ -5,6 +5,7 @@ namespace fxlint.Cases
     public class OldInRange : ILintCheck
     {
         static Regex _functionPattern = new Regex("function InRange\\(now\\)[\r\t\n ]*"
+            + "(-- from, to[\r\t\n ]*)?"
             + "if OpenTime[\r\t\n ]*<[\r\t\n ]*CloseTime then[\r\t\n ]*"
             + "return now[\r\t\n ]*>=[\r\t\n ]*OpenTime and now[\r\t\n ]*<=[\r\t\n ]*CloseTime;?[\r\t\n ]*"
             + "end[\r\t\n ]*"
