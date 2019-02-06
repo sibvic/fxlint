@@ -1,8 +1,5 @@
 ﻿using fxlint.Cases;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace fxlint_tests
 {

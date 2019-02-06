@@ -1,7 +1,5 @@
 using fxlint.Cases;
-using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace fxlint
 {
@@ -17,6 +15,7 @@ namespace fxlint
             _cases.Add(new OldTradingTimeCheck());
             _cases.Add(new OldPraseTime());
             _cases.Add(new OldInRange());
+            _cases.Add(new NoPrecisionForOscillator());
         }
 
         public static string[] GetWarnings(string code)
@@ -27,8 +26,6 @@ namespace fxlint
                 var lintWarnings = lintCase.GetWarnings(code);
                 warnings.AddRange(lintWarnings);
             }
-            if (ContainsNoPrecisionForOscullator(code))
-                warnings.Add("No precision for oscillator stream");
             if (ContainsNoAllowTrade(code))
                 warnings.Add("No allow trade");
             return warnings.ToArray();
@@ -58,25 +55,6 @@ namespace fxlint
             }
             return code;
         }
-
-        static Regex streamCreatePattern = new Regex("(?<streamName>[^ =]+) *= *instance:create\\(,");
-        static bool ContainsNoPrecisionForOscullator(string code)
-        {
-            if (!code.Contains("core.Oscillator"))
-                return false;
-
-            var matches = indicatorCreatePattern.Matches(code);
-            foreach (Match match in matches)
-            {
-                var streamName = match.Groups["streamName"].Value;
-                if (!code.Contains(streamName + ":setPrecision"))
-                    return true;
-            }
-
-            return false;
-        }
-
-        static Regex indicatorCreatePattern = new Regex("indicators:create\\((?<indiName>[^,]+),");
 
         internal static string FixCode(string code)
         {
