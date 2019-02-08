@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace fxlint
 {
@@ -8,8 +9,12 @@ namespace fxlint
     {
         static void Main(string[] args)
         {
-            var files = Directory.GetFiles(".", "*.lua", SearchOption.AllDirectories);
-            if (args.Length > 0 && args[0] == "--fix")
+            var options = Options.Parse(args);
+
+            IEnumerable<string> files = Directory.GetFiles(".", "*.lua", SearchOption.AllDirectories);
+            if (options.File != null)
+                files = files.Where(f => f == options.File);
+            if (options.Mode == Mode.Fix)
             {
                 foreach (var file in files)
                 {
