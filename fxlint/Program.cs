@@ -13,7 +13,7 @@ namespace fxlint
 
             IEnumerable<string> files = Directory.GetFiles(".", "*.lua", SearchOption.AllDirectories);
             if (options.File != null)
-                files = files.Where(f => f == options.File);
+                files = files.Where(f => Path.GetFileName(f) == options.File);
             if (options.Mode == Mode.Fix)
             {
                 foreach (var file in files)
