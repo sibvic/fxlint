@@ -13,7 +13,8 @@ namespace fxlint_tests
         const string presentSnippet3 = @"    assert(core.indicators:findIndicator(""ICHIMOKU + DAILY-CANDLE_X + HULL-MA_X + MACD"") ~= nil, ""ICHIMOKU + DAILY-CANDLE_X + HULL-MA_X + MACD"" .. "" indicator must be installed"");
     indi = core.indicators:create(""ICHIMOKU + DAILY-CANDLE_X + HULL-MA_X + MACD"", trading_logic.MainSource.close, keh);";
         const string presentSnippet4 = @"indiProfile = core.indicators:findIndicator(""CUSTOM TIME FRAME CANDLE VIEW.HAILKAYY"");
-    assert(indiProfile ~= nil, ""Please download and install CUSTOM TIME FRAME CANDLE VIEW.HAILKAYY.lua indicator"");";
+    assert(indiProfile ~= nil, ""Please download and install CUSTOM TIME FRAME CANDLE VIEW.HAILKAYY.lua indicator"");
+    indi = core.indicators:create(""CUSTOM TIME FRAME CANDLE VIEW.HAILKAYY"", source);";
 
         [TestMethod]
         public void MissingCheckPresent()
