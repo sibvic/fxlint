@@ -19,6 +19,16 @@ namespace fxlint.Cases
             Regex indicatorAssertPattern2 = new Regex("EnsureIndicatorInstalled\\( *" + name + "\\)");
             if (indicatorAssertPattern2.IsMatch(code))
                 return true;
+
+            Regex profileVariablePattern = new Regex("([\\w_\\d]+) *= *core\\.indicators:findIndicator\\( *" + name + "\\)");
+            var profileVariableMatch = profileVariablePattern.Match(code);
+            if (!profileVariableMatch.Success)
+                return false;
+            var profileVariable = profileVariableMatch.Groups[1].Value;
+            Regex indicatorAssertPattern3 = new Regex($"assert\\({profileVariable} ~= nil");
+            if (indicatorAssertPattern3.IsMatch(code))
+                return true;
+
             return false;
         }
 
