@@ -12,6 +12,8 @@ namespace fxlint_tests
         MA[i] = core.indicators:create(instance.parameters:getString(""Method"" .. i), Source[instance.parameters:getString(""Price""..i)],  instance.parameters:getInteger(""Period"" .. i)  );";
         const string presentSnippet3 = @"    assert(core.indicators:findIndicator(""ICHIMOKU + DAILY-CANDLE_X + HULL-MA_X + MACD"") ~= nil, ""ICHIMOKU + DAILY-CANDLE_X + HULL-MA_X + MACD"" .. "" indicator must be installed"");
     indi = core.indicators:create(""ICHIMOKU + DAILY-CANDLE_X + HULL-MA_X + MACD"", trading_logic.MainSource.close, keh);";
+        const string presentSnippet4 = @"indiProfile = core.indicators:findIndicator(""CUSTOM TIME FRAME CANDLE VIEW.HAILKAYY"");
+    assert(indiProfile ~= nil, ""Please download and install CUSTOM TIME FRAME CANDLE VIEW.HAILKAYY.lua indicator"");";
 
         [TestMethod]
         public void MissingCheckPresent()
@@ -25,6 +27,9 @@ namespace fxlint_tests
 
             var warnings3 = check.GetWarnings(presentSnippet3);
             Assert.AreEqual(0, warnings3.Length);
+
+            var warnings4 = check.GetWarnings(presentSnippet4);
+            Assert.AreEqual(0, warnings4.Length);
         }
 
         [TestMethod]
