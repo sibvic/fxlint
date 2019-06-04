@@ -10,7 +10,7 @@ namespace fxlint.Cases
 
         bool IsCheckPresent(string code, string indicatorName)
         {
-            if (IsStandardIndicator(indicatorName.Trim('"')))
+            if (IsStandardIndicator(indicatorName.Trim('"').Trim('\'')))
                 return true;
             var name = indicatorName.Replace("[", "\\[").Replace("(", "\\(").Replace(")", "\\)").Replace("+", "\\+");
             Regex indicatorAssertPattern = new Regex("core\\.indicators:findIndicator\\( *" + name + "\\) ~= nil");
