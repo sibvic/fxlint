@@ -34,9 +34,41 @@ namespace fxlint.Cases
             + "end"
         );
 
-        public string Fix(string code)
-        {
-            return _functionPattern.Replace(code, @"function exit(BuySell, use_net)
+        static Regex _functionNormilizedPattern = new Regex("function exit\\(BuySell\\)" + EOF
+            + "if not \\(AllowTrade\\) then" + EOF
+            + "return true" + EOF
+            + "end" + EOF
+            + "local valuemap, success, msg" + EOF
+            + "if tradesCount\\(BuySell\\) > 0 then" + EOF
+            + "valuemap = core.valuemap\\(\\)" + EOF
+            + "-- switch the direction since the order must be in oppsite direction" + EOF
+            + "if BuySell == \"B\" then" + EOF
+            + "BuySell = \"S\"" + EOF
+            + "else" + EOF
+            + "BuySell = \"B\"" + EOF
+            + "end" + EOF
+            + "valuemap.OrderType = \"CM\"" + EOF
+            + "valuemap.OfferID = Offer" + EOF
+            + "valuemap.AcctID = Account" + EOF
+            + "valuemap.NetQtyFlag = \"Y\"" + EOF
+            + "valuemap.BuySell = BuySell" + EOF
+            + "success, msg = terminal:execute\\(\\d+, valuemap\\)" + EOF
+            + "if not \\(success\\) then" + EOF
+            + "terminal:alertMessage\\(" + EOF
+            + "instance.bid:instrument\\(\\)," + EOF
+            + "instance.bid\\[instance.bid:size\\(\\) - 1\\]," + EOF
+            + "\"Open order failed\" .. msg," + EOF
+            + "instance.bid:date\\(instance.bid:size\\(\\) - 1\\)" + EOF
+            + "\\)" + EOF
+            + "return false" + EOF
+            + "end" + EOF
+            + "return true" + EOF
+            + "end" + EOF
+            + "return false" + EOF
+            + "end"
+        );
+
+        private const string _fixedCode = @"function exit(BuySell, use_net)
     if not (AllowTrade) then
         return true
     end
@@ -88,12 +120,19 @@ namespace fxlint.Cases
         end
     end
     return false
-end");
+end";
+        public string Fix(string code)
+        {
+            if (_functionPattern.IsMatch(code))
+                return _functionPattern.Replace(code, _fixedCode);
+            return _functionNormilizedPattern.Replace(code, _fixedCode);
         }
 
         public string[] GetWarnings(string code)
         {
             if (_functionPattern.IsMatch(code))
+                return new string[] { "Old version of Exit" };
+            if (_functionNormilizedPattern.IsMatch(code))
                 return new string[] { "Old version of Exit" };
             return new string[] { };
         }
