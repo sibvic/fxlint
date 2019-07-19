@@ -5,13 +5,27 @@ It searched for typical errors in the code
 
 ## Related projects
 
+[Lint utility for indicators/strategies](https://github.com/sibvic/fxlint)
+
+### Templates
+
+[FXTS2](https://github.com/sibvic/fxts2-templates) 
+
+[PineScript/TradingView](https://github.com/sibvic/pinescript-templates) 
+
+[MT5/MQL5](https://github.com/sibvic/mq5-templates) 
+
+[NT8/Ninja Trader 8](https://github.com/sibvic/nt8-templates) 
+
 ### Code Snippets for Visual Studio Code
 
-[MT4/MQL4](https://github.com/sibvic/vsc-mq4-snippets) [Indicore](https://github.com/sibvic/vsc-indicore)
+[MT4/MQL4](https://github.com/sibvic/vsc-mq4-snippets) 
 
-### Code templates
+[MT5/MQL5](https://github.com/sibvic/vsc-mq5-snippets) 
 
-[MT4/MQL4](https://github.com/sibvic/vsc-mq4-snippets) [FXTS2](https://github.com/sibvic/fxts2-templates) [MT5/MQL5](https://github.com/sibvic/mq5-templates) [PineScript/TradingView](https://github.com/sibvic/pinescript-templates)
+[Indicore](https://github.com/sibvic/vsc-indicore)
+
+[NinjaTrader8](https://github.com/sibvic/vsc-nt8-snippets)
 
 ## Donations gratefully accepted.
 
