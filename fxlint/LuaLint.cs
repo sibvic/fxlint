@@ -12,7 +12,6 @@ namespace fxlint
             _cases.Add(new InRangeUse());
             _cases.Add(new MissingIndicatorCheck());
             _cases.Add(new ConvertTimeTZServer());
-            _cases.Add(new OldTradingTimeCheck());
             _cases.Add(new OldPraseTime());
             _cases.Add(new OldInRange());
             _cases.Add(new NoPrecisionForOscillator());
