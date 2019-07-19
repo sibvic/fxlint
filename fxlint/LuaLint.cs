@@ -16,6 +16,7 @@ namespace fxlint
             _cases.Add(new OldInRange());
             _cases.Add(new NoPrecisionForOscillator());
             _cases.Add(new OldExitFunction());
+            _cases.Add(new NoNonOptimizableParameters());
         }
 
         public static string[] GetWarnings(string code)
