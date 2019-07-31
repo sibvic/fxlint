@@ -20,6 +20,9 @@ namespace fxlint.Cases
         public string Fix(string code)
         {
             var fixedCode = _functionPattern.Replace(code, @"function InRange(now, openTime, closeTime)
+    if openTime == closeTime then
+        return true;
+    end
     if openTime < closeTime then
         return now >= openTime and now <= closeTime;
     end
