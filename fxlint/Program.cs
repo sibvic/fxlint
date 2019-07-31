@@ -67,9 +67,14 @@ namespace fxlint
                         {
                             var newCode = LuaLint.FixCode(code);
                             if (newCode != code)
-                            {
                                 File.WriteAllText(file, newCode);
-                            }
+                        }
+                        break;
+                    case ".MQ4":
+                        {
+                            var newCode = MQL4Lint.FixCode(code);
+                            if (newCode != code)
+                                File.WriteAllText(file, newCode);
                         }
                         break;
                 }
@@ -96,6 +101,8 @@ namespace fxlint
             {
                 case ".LUA":
                     return LuaLint.GetWarnings(code);
+                case ".MQ4":
+                    return MQL4Lint.GetWarnings(code);
             }
             return new string[0];
         }
