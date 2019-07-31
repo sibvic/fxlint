@@ -1,4 +1,4 @@
-using fxlint.Cases;
+using fxlint.LuaCases;
 using System.Collections.Generic;
 
 namespace fxlint

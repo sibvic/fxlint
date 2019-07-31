@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace fxlint.Cases
+namespace fxlint.LuaCases
 {
     public class NoNonOptimizableParameters : ILintCheck
     {

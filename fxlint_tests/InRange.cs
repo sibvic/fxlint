@@ -1,5 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using fxlint.Cases;
+using fxlint.LuaCases;
 
 namespace fxlint_tests
 {

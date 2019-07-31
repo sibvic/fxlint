@@ -1,4 +1,4 @@
-﻿using fxlint.Cases;
+﻿using fxlint.LuaCases;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace fxlint_tests

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace fxlint.Cases
+namespace fxlint.LuaCases
 {
     public class InRangeUse : ILintCheck
     {

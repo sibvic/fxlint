@@ -1,4 +1,4 @@
-﻿namespace fxlint.Cases
+﻿namespace fxlint
 {
     public interface ILintCheck
     {

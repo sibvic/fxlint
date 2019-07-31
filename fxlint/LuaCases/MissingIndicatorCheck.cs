@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace fxlint.Cases
+namespace fxlint.LuaCases
 {
     public class MissingIndicatorCheck : ILintCheck
     {
