@@ -19,12 +19,12 @@ namespace fxlint
             _cases.Add(new NoNonOptimizableParameters());
         }
 
-        public static string[] GetWarnings(string code)
+        public static string[] GetWarnings(string code, string name)
         {
             List<string> warnings = new List<string>();
             foreach (var lintCase in _cases)
             {
-                var lintWarnings = lintCase.GetWarnings(code);
+                var lintWarnings = lintCase.GetWarnings(code, name);
                 warnings.AddRange(lintWarnings);
             }
             if (ContainsNoAllowTrade(code))

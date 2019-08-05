@@ -34,7 +34,7 @@ end
 
 ";
 
-        public string[] GetWarnings(string code)
+        public string[] GetWarnings(string code, string name)
         {
             if (code.Contains(" InRange(") && !code.Contains("function InRange"))
                 return new string[] { "No InRange method" };

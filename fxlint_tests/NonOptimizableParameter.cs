@@ -47,14 +47,14 @@ end";
         {
             NoNonOptimizableParameters check = new NoNonOptimizableParameters();
             var newCode = check.Fix(InitSnippetNigative);
-            Assert.AreEqual(0, check.GetWarnings(newCode).Length);
+            Assert.AreEqual(0, check.GetWarnings(newCode, "").Length);
         }
 
         [TestMethod]
         public void WithoutNonOptimizableParams()
         {
             NoNonOptimizableParameters check = new NoNonOptimizableParameters();
-            var warnings = check.GetWarnings(InitSnippetNigative);
+            var warnings = check.GetWarnings(InitSnippetNigative, "");
             Assert.AreEqual(1, warnings.Length);
         }
 
@@ -62,7 +62,7 @@ end";
         public void WithNonOptimizableParams()
         {
             NoNonOptimizableParameters check = new NoNonOptimizableParameters();
-            var warnings = check.GetWarnings(InitSnippetPositive);
+            var warnings = check.GetWarnings(InitSnippetPositive, "");
             Assert.AreEqual(0, warnings.Length);
         }
     }

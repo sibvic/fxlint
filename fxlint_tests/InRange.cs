@@ -49,7 +49,7 @@ end";
         public void OldParseTimeDetect()
         {
             OldPraseTime check = new OldPraseTime();
-            var warnings = check.GetWarnings(oldParseTimeSnippet);
+            var warnings = check.GetWarnings(oldParseTimeSnippet, "");
             Assert.AreEqual(1, warnings.Length);
         }
 
@@ -82,7 +82,7 @@ end
         public void OldInRangeDetect()
         {
             var check = new OldInRange();
-            var warnings = check.GetWarnings(oldInRangeSnippet);
+            var warnings = check.GetWarnings(oldInRangeSnippet, "");
             Assert.AreEqual(1, warnings.Length);
         }
 
@@ -103,7 +103,7 @@ end
         public void TimeConversionDetect()
         {
             ConvertTimeTZServer check = new ConvertTimeTZServer();
-            var warnings = check.GetWarnings(timeConversionSnippet);
+            var warnings = check.GetWarnings(timeConversionSnippet, "");
             Assert.AreEqual(1, warnings.Length);
         }
 
@@ -120,7 +120,7 @@ end
         public void InRangePresentDetect()
         {
             InRangeUse check = new InRangeUse();
-            var warnings = check.GetWarnings(inRangeUseSnippet);
+            var warnings = check.GetWarnings(inRangeUseSnippet, "");
             Assert.AreEqual(1, warnings.Length);
         }
 
@@ -144,7 +144,7 @@ end
         public void OldTradingTimeCheckDetect()
         {
             OldTradingTimeCheck check = new OldTradingTimeCheck();
-            var warnings = check.GetWarnings(inRangeSnippet);
+            var warnings = check.GetWarnings(inRangeSnippet, "");
             Assert.AreEqual(1, warnings.Length);
         }
 
@@ -152,7 +152,7 @@ end
         public void OldTradingTimeCheckDetect2()
         {
             OldTradingTimeCheck check = new OldTradingTimeCheck();
-            var warnings = check.GetWarnings(inRangeSnippet2);
+            var warnings = check.GetWarnings(inRangeSnippet2, "");
             Assert.AreEqual(1, warnings.Length);
         }
 

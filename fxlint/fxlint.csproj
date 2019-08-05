@@ -5,8 +5,4 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="MQL4Cases\" />
-  </ItemGroup>
-
 </Project>

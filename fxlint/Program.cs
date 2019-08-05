@@ -11,7 +11,10 @@ namespace fxlint
         {
             var options = Options.Parse(args);
 
-            IEnumerable<string> files = Directory.GetFiles(".", "*.lua", SearchOption.AllDirectories);
+            IEnumerable<string> files = Directory
+                .GetFiles(".", "*.*", SearchOption.AllDirectories)
+                .Where(file => file.EndsWith(".lua", StringComparison.InvariantCultureIgnoreCase) || file.EndsWith(".mq4", StringComparison.InvariantCultureIgnoreCase))
+                .ToList();
             if (options.File != null)
                 files = files.Where(f => Path.GetFileName(f) == options.File);
             if (options.Mode == Mode.Fix)
@@ -100,9 +103,9 @@ namespace fxlint
             switch (Path.GetExtension(file).ToUpper())
             {
                 case ".LUA":
-                    return LuaLint.GetWarnings(code);
+                    return LuaLint.GetWarnings(code, Path.GetFileNameWithoutExtension(file));
                 case ".MQ4":
-                    return MQL4Lint.GetWarnings(code);
+                    return MQL4Lint.GetWarnings(code, Path.GetFileNameWithoutExtension(file));
             }
             return new string[0];
         }

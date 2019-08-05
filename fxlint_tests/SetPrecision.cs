@@ -17,7 +17,7 @@ namespace fxlint_tests
         public void NoPrecisionDetect()
         {
             var check = new NoPrecisionForOscillator();
-            var warnings = check.GetWarnings(_noPrecisionSnippet);
+            var warnings = check.GetWarnings(_noPrecisionSnippet, "");
             Assert.AreEqual(1, warnings.Length);
         }
 

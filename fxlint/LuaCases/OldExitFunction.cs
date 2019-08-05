@@ -128,7 +128,7 @@ end";
             return _functionNormilizedPattern.Replace(code, _fixedCode);
         }
 
-        public string[] GetWarnings(string code)
+        public string[] GetWarnings(string code, string name)
         {
             if (_functionPattern.IsMatch(code))
                 return new string[] { "Old version of Exit" };

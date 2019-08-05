@@ -5,7 +5,7 @@ namespace fxlint.LuaCases
     public class OldTradingTimeCheck : ILintCheck
     {
         static Regex _pattern = new Regex(" not\\(now ?>= ?OpenTime(\n\r)?[^a]*and now ?<= ?CloseTime\\)[\t\r\n ]");
-        public string[] GetWarnings(string code)
+        public string[] GetWarnings(string code, string name)
         {
             if (_pattern.IsMatch(code))
                 return new string[] { "Old version of trading time check (not via InRange)" };

@@ -3,6 +3,6 @@
     public interface ILintCheck
     {
         string Fix(string code);
-        string[] GetWarnings(string code);
+        string[] GetWarnings(string code, string name);
     }
 }

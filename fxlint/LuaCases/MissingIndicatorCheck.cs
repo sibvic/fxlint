@@ -130,7 +130,7 @@ namespace fxlint.LuaCases
             return false;
         }
 
-        public string[] GetWarnings(string code)
+        public string[] GetWarnings(string code, string name)
         {
             List<string> missingChecks = new List<string>();
             var matches = indicatorCreatePattern.Matches(code);

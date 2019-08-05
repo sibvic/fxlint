@@ -36,7 +36,7 @@ end");
             return _usePattern.Replace(fixedCode, "InRange(now, OpenTime, CloseTime)");
         }
 
-        public string[] GetWarnings(string code)
+        public string[] GetWarnings(string code, string name)
         {
             if (_functionPattern.IsMatch(code))
                 return new string[] { "Old version of InRange" };

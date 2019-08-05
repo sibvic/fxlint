@@ -1,4 +1,5 @@
 ﻿using fxlint.LuaCases;
+using fxlint.MQL4Cases;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace fxlint_tests
@@ -20,16 +21,16 @@ namespace fxlint_tests
         public void MissingCheckPresent()
         {
             MissingIndicatorCheck check = new MissingIndicatorCheck();
-            var warnings = check.GetWarnings(presentSnippet);
+            var warnings = check.GetWarnings(presentSnippet, "");
             Assert.AreEqual(0, warnings.Length);
 
-            var warnings2 = check.GetWarnings(presentSnippet2);
+            var warnings2 = check.GetWarnings(presentSnippet2, "");
             Assert.AreEqual(0, warnings2.Length);
 
-            var warnings3 = check.GetWarnings(presentSnippet3);
+            var warnings3 = check.GetWarnings(presentSnippet3, "");
             Assert.AreEqual(0, warnings3.Length);
 
-            var warnings4 = check.GetWarnings(presentSnippet4);
+            var warnings4 = check.GetWarnings(presentSnippet4, "");
             Assert.AreEqual(0, warnings4.Length);
         }
 
@@ -45,6 +46,16 @@ namespace fxlint_tests
 
             var fixedCode3 = check.Fix(presentSnippet3);
             Assert.AreEqual(presentSnippet3, fixedCode3);
+        }
+
+        const string no_check_mql4_code = "double nma4_current = iCustom(_symbol, _timeframe, \"NMA.4\", 0, 0 + shift);";
+
+        [TestMethod]
+        public void MissingCheckMQL4()
+        {
+            var check = new NoCustomIndicatorCheck();
+            var warnings = check.GetWarnings(no_check_mql4_code, "");
+            Assert.AreEqual(1, warnings.Length);
         }
     }
 }

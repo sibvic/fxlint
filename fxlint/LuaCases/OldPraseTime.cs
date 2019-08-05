@@ -36,7 +36,7 @@ namespace fxlint.LuaCases
 end");
         }
 
-        public string[] GetWarnings(string code)
+        public string[] GetWarnings(string code, string name)
         {
             if (_pattern.IsMatch(code))
                 return new string[] { "Old version of ParseTime" };

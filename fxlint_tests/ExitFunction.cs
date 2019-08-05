@@ -77,7 +77,7 @@ end";
         public void Detect()
         {
             OldExitFunction check = new OldExitFunction();
-            var warnings = check.GetWarnings(oldExitFunction);
+            var warnings = check.GetWarnings(oldExitFunction, "");
             Assert.AreEqual(1, warnings.Length);
         }
 
@@ -85,7 +85,7 @@ end";
         public void DetectNomilized()
         {
             OldExitFunction check = new OldExitFunction();
-            var warnings = check.GetWarnings(normilizedOldExitFunction);
+            var warnings = check.GetWarnings(normilizedOldExitFunction, "");
             Assert.AreEqual(1, warnings.Length);
         }
 

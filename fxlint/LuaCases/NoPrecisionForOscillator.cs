@@ -53,7 +53,7 @@ namespace fxlint.LuaCases
             return index;
         }
 
-        public string[] GetWarnings(string code)
+        public string[] GetWarnings(string code, string name)
         {
             return GetNames(code).Select(n => "No setPrecision for " + n).ToArray();
         }

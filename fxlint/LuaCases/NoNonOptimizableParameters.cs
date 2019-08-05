@@ -23,7 +23,7 @@ namespace fxlint.LuaCases
             return code.Insert(nextLinePos + 1, "	strategy:setTag(\"NonOptimizableParameters\", \"Email,SendEmail,SoundFile,RecurrentSound,PlaySound,ShowAlert\");\n");
         }
 
-        public string[] GetWarnings(string code)
+        public string[] GetWarnings(string code, string name)
         {
             if (!code.Contains("strategy:name("))
                 return new string[0];

@@ -11,7 +11,7 @@ namespace fxlint.LuaCases
             return _pattern.Replace(code, "now = core.host:execute(\"convertTime\", core.TZ_EST");
         }
 
-        public string[] GetWarnings(string code)
+        public string[] GetWarnings(string code, string name)
         {
             if (_pattern.IsMatch(code))
                 return new string[] { "Convertion of now to TZ_SERVER" };
