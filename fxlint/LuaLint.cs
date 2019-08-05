@@ -57,14 +57,14 @@ namespace fxlint
             return code;
         }
 
-        internal static string FixCode(string code)
+        internal static string FixCode(string code, string name)
         {
             var fixedCode = code;
             if (ContainsNoAllowTrade(fixedCode))
                 fixedCode = FixNoAllowTrade(fixedCode);
             foreach (var lintCase in _cases)
             {
-                fixedCode = lintCase.Fix(fixedCode);
+                fixedCode = lintCase.Fix(fixedCode, name);
             }
 
             return fixedCode;

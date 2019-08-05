@@ -8,7 +8,7 @@ namespace fxlint.LuaCases
     public class NoPrecisionForOscillator : ILintCheck
     {
         static Regex _pattern = new Regex("(?<streamName>[^\t\r\n =]+)[\t\r\n ]*=[\t\r\n ]*instance:addStream\\(");
-        public string Fix(string code)
+        public string Fix(string code, string fileName)
         {
             List<string> names = GetNames(code);
             var fixedCode = code;

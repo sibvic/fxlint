@@ -121,7 +121,7 @@ namespace fxlint.LuaCases
     end
     return false
 end";
-        public string Fix(string code)
+        public string Fix(string code, string name)
         {
             if (_functionPattern.IsMatch(code))
                 return _functionPattern.Replace(code, _fixedCode);

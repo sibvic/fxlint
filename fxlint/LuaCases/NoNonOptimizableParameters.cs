@@ -6,7 +6,7 @@ namespace fxlint.LuaCases
 {
     public class NoNonOptimizableParameters : ILintCheck
     {
-        public string Fix(string code)
+        public string Fix(string code, string name)
         {
             if (!NeedNonOptimizableParameters(code))
                 return code;

@@ -43,7 +43,7 @@ end
             return new string[] { };
         }
 
-        public string Fix(string code)
+        public string Fix(string code, string name)
         {
             if (!code.Contains(" InRange("))
                 return code;

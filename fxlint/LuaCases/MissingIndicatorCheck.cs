@@ -32,7 +32,7 @@ namespace fxlint.LuaCases
             return false;
         }
 
-        public string Fix(string code)
+        public string Fix(string code, string name)
         {
             var lines = new List<string>();
             lines.AddRange(code.Split('\n'));

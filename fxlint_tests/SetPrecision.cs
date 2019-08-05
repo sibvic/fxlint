@@ -25,7 +25,7 @@ namespace fxlint_tests
         public void NoPrecisionFix()
         {
             var check = new NoPrecisionForOscillator();
-            var fixedCode = check.Fix(_noPrecisionSnippet);
+            var fixedCode = check.Fix(_noPrecisionSnippet, "");
             Assert.AreEqual(true, fixedCode.Contains("SIG:setPrecision(math.max(2, instance.source:getPrecision()));"));
         }
         #endregion

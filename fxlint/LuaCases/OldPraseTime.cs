@@ -16,7 +16,7 @@ namespace fxlint.LuaCases
             + "end"
           );
 
-        public string Fix(string code)
+        public string Fix(string code, string name)
         {
             return _pattern.Replace(code, @"function ParseTime(time)
     local pos = string.find(time, "":"");

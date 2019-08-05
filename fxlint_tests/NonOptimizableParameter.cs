@@ -46,7 +46,7 @@ end";
         public void FixNonOptimizableParams()
         {
             NoNonOptimizableParameters check = new NoNonOptimizableParameters();
-            var newCode = check.Fix(InitSnippetNigative);
+            var newCode = check.Fix(InitSnippetNigative, "");
             Assert.AreEqual(0, check.GetWarnings(newCode, "").Length);
         }
 

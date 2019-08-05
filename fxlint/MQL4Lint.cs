@@ -24,12 +24,12 @@ namespace fxlint
             return warnings.ToArray();
         }
 
-        internal static string FixCode(string code)
+        internal static string FixCode(string code, string fileName)
         {
             var fixedCode = code;
             foreach (var lintCase in _cases)
             {
-                fixedCode = lintCase.Fix(fixedCode);
+                fixedCode = lintCase.Fix(fixedCode, fileName);
             }
             return fixedCode;
         }

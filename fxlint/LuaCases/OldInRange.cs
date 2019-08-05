@@ -17,7 +17,7 @@ namespace fxlint.LuaCases
           );
         static Regex _usePattern = new Regex("InRange\\(now\\)");
 
-        public string Fix(string code)
+        public string Fix(string code, string name)
         {
             var fixedCode = _functionPattern.Replace(code, @"function InRange(now, openTime, closeTime)
     if openTime == closeTime then

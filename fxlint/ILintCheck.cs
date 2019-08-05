@@ -2,7 +2,7 @@
 {
     public interface ILintCheck
     {
-        string Fix(string code);
+        string Fix(string code, string name);
         string[] GetWarnings(string code, string name);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -9,15 +10,23 @@ namespace fxlint.MQL4Cases
     {
         Regex _usePattern = new Regex("iCustom\\([^,]+,[^,]+,([^,]+)");
         
-        public string Fix(string code)
+        public string Fix(string code, string name)
         {
-            throw new NotImplementedException();
+            var checks = GetMissingChecks(code, name);
+            
+            return code;
         }
 
         public string[] GetWarnings(string code, string name)
         {
-            var added = new List<string>();
+            return GetMissingChecks(code, name)
+                .Select(mc => "No check for existance of custom indicator: " + mc)
+                .ToArray();
+        }
 
+        List<string> GetMissingChecks(string code, string name)
+        {
+            var added = new List<string>();
             List<string> warnings = new List<string>();
             var matches = _usePattern.Matches(code);
             foreach (Match match in matches)
@@ -25,14 +34,11 @@ namespace fxlint.MQL4Cases
                 if (match.Groups[1].Value == name)
                     continue;
 
-                Regex _checkPattern = new Regex("temp ?= ?iCustom([^,]+,[^,]+, ?" + match.Groups[1].Value + ",[^,]+0,[^,]+0);\n[^i]*if ?(GetLastError() ?== ?ERR_INDICATOR_CANNOT_LOAD)");
+                Regex _checkPattern = new Regex("temp ?= ?iCustom([^,]+,[^,]+, ?" + match.Groups[1].Value + ",[^,]+,[^,]+);[\r\n\t ]*if ?\\(GetLastError");
                 if (!_checkPattern.IsMatch(code) && !added.Contains(match.Groups[1].Value))
-                {
-                    warnings.Add("No check for existance of custom indicator: " + match.Groups[1].Value);
                     added.Add(match.Groups[1].Value);
-                }
             }
-            return warnings.ToArray();
+            return added;
         }
     }
 }

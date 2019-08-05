@@ -38,17 +38,19 @@ namespace fxlint_tests
         public void MissingFixPresent()
         {
             MissingIndicatorCheck check = new MissingIndicatorCheck();
-            var fixedCode = check.Fix(presentSnippet);
+            var fixedCode = check.Fix(presentSnippet, "");
             Assert.AreEqual(presentSnippet, fixedCode);
 
-            var fixedCode2 = check.Fix(presentSnippet2);
+            var fixedCode2 = check.Fix(presentSnippet2, "");
             Assert.AreEqual(presentSnippet2, fixedCode2);
 
-            var fixedCode3 = check.Fix(presentSnippet3);
+            var fixedCode3 = check.Fix(presentSnippet3, "");
             Assert.AreEqual(presentSnippet3, fixedCode3);
         }
 
         const string no_check_mql4_code = "double nma4_current = iCustom(_symbol, _timeframe, \"NMA.4\", 0, 0 + shift);";
+        const string check_mql4_code = @"double temp = iCustom(NULL, 0, ""2 bar supply and demand"", 0, 0);
+   if (GetLastError() == ERR_INDICATOR_CANNOT_LOAD)";
 
         [TestMethod]
         public void MissingCheckMQL4()
@@ -56,6 +58,14 @@ namespace fxlint_tests
             var check = new NoCustomIndicatorCheck();
             var warnings = check.GetWarnings(no_check_mql4_code, "");
             Assert.AreEqual(1, warnings.Length);
+        }
+
+        [TestMethod]
+        public void CheckMQL4()
+        {
+            var check = new NoCustomIndicatorCheck();
+            var warnings = check.GetWarnings(check_mql4_code, "");
+            Assert.AreEqual(0, warnings.Length);
         }
     }
 }

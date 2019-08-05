@@ -93,7 +93,7 @@ end";
         public void Fix()
         {
             OldExitFunction check = new OldExitFunction();
-            var code = check.Fix(oldExitFunction);
+            var code = check.Fix(oldExitFunction, "");
             Assert.AreEqual(true, code.Contains("function exit(BuySell, use_net)"));
         }
 

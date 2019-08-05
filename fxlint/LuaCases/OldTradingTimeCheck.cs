@@ -12,7 +12,7 @@ namespace fxlint.LuaCases
             return new string[] { };
         }
 
-        public string Fix(string code)
+        public string Fix(string code, string name)
         {
             return _pattern.Replace(code, " not InRange(now, OpenTime, CloseTime) ");
         }

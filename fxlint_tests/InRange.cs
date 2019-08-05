@@ -57,7 +57,7 @@ end";
         public void OldParseTimeFix()
         {
             OldPraseTime check = new OldPraseTime();
-            var fixedCode = check.Fix(oldParseTimeSnippet);
+            var fixedCode = check.Fix(oldParseTimeSnippet, "");
             Assert.AreEqual(true, fixedCode.Contains(@"local pos = string.find(time, "":"");
     if pos == nil then"));
         }
@@ -90,7 +90,7 @@ end
         public void OldInRangeFix()
         {
             var check = new OldInRange();
-            var fixedCode = check.Fix(oldInRangeSnippet);
+            var fixedCode = check.Fix(oldInRangeSnippet, "");
             Assert.AreEqual(true, fixedCode.Contains("function InRange(now, openTime, closeTime)"));
             Assert.AreEqual(true, fixedCode.Contains("InRange(now, OpenTime, CloseTime)"));
         }
@@ -111,7 +111,7 @@ end
         public void TimeConversionFix()
         {
             ConvertTimeTZServer check = new ConvertTimeTZServer();
-            var fixedCode = check.Fix(timeConversionSnippet);
+            var fixedCode = check.Fix(timeConversionSnippet, "");
             Assert.AreEqual("now = core.host:execute(\"convertTime\", core.TZ_EST, ToTime, now);", fixedCode);
         }
         #endregion
@@ -128,7 +128,7 @@ end
         public void InRangePresentFix()
         {
             InRangeUse check = new InRangeUse();
-            var fixedCode = check.Fix(inRangeUseSnippet);
+            var fixedCode = check.Fix(inRangeUseSnippet, "");
             Assert.AreEqual(true, fixedCode.Contains("function InRange("));
         }
 
@@ -136,7 +136,7 @@ end
         public void InRangePresentFixNoNeed()
         {
             InRangeUse check = new InRangeUse();
-            var fixedCode = check.Fix(noInrangeUseSnippet);
+            var fixedCode = check.Fix(noInrangeUseSnippet, "");
             Assert.AreEqual(noInrangeUseSnippet, fixedCode);
         }
 
@@ -160,7 +160,7 @@ end
         public void OldTradingTimeCheckFix()
         {
             OldTradingTimeCheck check = new OldTradingTimeCheck();
-            var fixedCode = check.Fix(inRangeSnippet);
+            var fixedCode = check.Fix(inRangeSnippet, "");
             Assert.AreEqual(true, fixedCode.Contains(" not InRange(now, OpenTime, CloseTime) "));
         }
 
@@ -168,7 +168,7 @@ end
         public void OldTradingTimeCheckFix2()
         {
             OldTradingTimeCheck check = new OldTradingTimeCheck();
-            var fixedCode = check.Fix(inRangeSnippet2);
+            var fixedCode = check.Fix(inRangeSnippet2, "");
             Assert.AreEqual(true, fixedCode.Contains(" not InRange(now, OpenTime, CloseTime) "));
         }
     }
