@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace fxlint.MQL4Cases
@@ -9,12 +7,40 @@ namespace fxlint.MQL4Cases
     public class NoCustomIndicatorCheck : ILintCheck
     {
         Regex _usePattern = new Regex("iCustom\\([^,]+,[^,]+,([^,]+)");
-        
+        Regex _initFunctionPattern = new Regex("(int init\\(\\)[\r\n\t ]*{[\r\n\t ]*)");
+
+        string FormatCheck(string name)
+        {
+            return "temp = iCustom(NULL, 0, " + name + ", 0, 0);\n"
+                + "   if (GetLastError() == ERR_INDICATOR_CANNOT_LOAD)\n"
+                + "   {\n"
+                + "       Alert(\"Please, install the '" + name.Trim('"') + "' indicator\");\n"
+                + "       return INIT_FAILED;\n"
+                + "   }\n   ";
+        }
+
+        int GetInitFunctionPosition(string code)
+        {
+            var initMatch = _initFunctionPattern.Match(code);
+            if (initMatch.Success)
+            {
+                var init = initMatch.Groups[1].Value;
+                return code.IndexOf(init) + init.Length;
+            }
+            return -1;
+        }
+
         public string Fix(string code, string name)
         {
             var checks = GetMissingChecks(code, name);
-            
-            return code;
+            if (!checks.Any())
+                return code;
+            var position = GetInitFunctionPosition(code);
+            if (position == -1)
+                return code;
+
+            var checksCode = string.Join("    \n", checks.Select(c => FormatCheck(c)));
+            return code.Insert(position, "    double " + checksCode);
         }
 
         public string[] GetWarnings(string code, string name)
@@ -27,7 +53,6 @@ namespace fxlint.MQL4Cases
         List<string> GetMissingChecks(string code, string name)
         {
             var added = new List<string>();
-            List<string> warnings = new List<string>();
             var matches = _usePattern.Matches(code);
             foreach (Match match in matches)
             {
