@@ -49,6 +49,9 @@ namespace fxlint_tests
         }
 
         const string no_check_mql4_code = "double nma4_current = iCustom(_symbol, _timeframe, \"NMA.4\", 0, 0 + shift);";
+        const string check_mql4_code2 = @"double ST = iCustom(NULL, 0, ""ST"", ST_N, ST_M, 2, period);
+   double temp = iCustom(NULL, 0, ""ST"", ST_N, ST_M, 0, 0);
+   if (GetLastError() == ERR_INDICATOR_CANNOT_LOAD)";
         const string check_mql4_code = @"double temp = iCustom(NULL, 0, ""2 bar supply and demand"", 0, 0);
    if (GetLastError() == ERR_INDICATOR_CANNOT_LOAD)";
 
@@ -65,6 +68,9 @@ namespace fxlint_tests
         {
             var check = new NoCustomIndicatorCheck();
             var warnings = check.GetWarnings(check_mql4_code, "");
+            Assert.AreEqual(0, warnings.Length);
+
+            warnings = check.GetWarnings(check_mql4_code2, "");
             Assert.AreEqual(0, warnings.Length);
         }
     }

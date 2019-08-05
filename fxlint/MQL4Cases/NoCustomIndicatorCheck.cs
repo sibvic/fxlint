@@ -31,12 +31,13 @@ namespace fxlint.MQL4Cases
             var matches = _usePattern.Matches(code);
             foreach (Match match in matches)
             {
-                if (match.Groups[1].Value == name)
+                var indicatorName = match.Groups[1].Value.Trim();
+                if (indicatorName.Trim('"') == name)
                     continue;
 
-                Regex _checkPattern = new Regex("temp ?= ?iCustom([^,]+,[^,]+, ?" + match.Groups[1].Value + ",[^,]+,[^,]+);[\r\n\t ]*if ?\\(GetLastError");
-                if (!_checkPattern.IsMatch(code) && !added.Contains(match.Groups[1].Value))
-                    added.Add(match.Groups[1].Value);
+                Regex _checkPattern = new Regex("temp ?= ?iCustom\\([^,]+,[^,]+, ?" + indicatorName + ",[^)]+\\);[\r\n\t ]*if ?\\(GetLastError");
+                if (!_checkPattern.IsMatch(code) && !added.Contains(indicatorName))
+                    added.Add(indicatorName);
             }
             return added;
         }
