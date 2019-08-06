@@ -8,6 +8,7 @@ namespace fxlint.MQL4Cases
     {
         Regex _usePattern = new Regex("iCustom\\([^,]+,[^,]+,([^,]+)");
         Regex _initFunctionPattern = new Regex("(int init\\(\\)[\r\n\t ]*{[\r\n\t ]*)");
+        Regex _initFunctionPattern2 = new Regex("(int OnInit\\(\\)[\r\n\t ]*{[\r\n\t ]*)");
 
         string FormatCheck(string name)
         {
@@ -22,6 +23,12 @@ namespace fxlint.MQL4Cases
         int GetInitFunctionPosition(string code)
         {
             var initMatch = _initFunctionPattern.Match(code);
+            if (initMatch.Success)
+            {
+                var init = initMatch.Groups[1].Value;
+                return code.IndexOf(init) + init.Length;
+            }
+            initMatch = _initFunctionPattern2.Match(code);
             if (initMatch.Success)
             {
                 var init = initMatch.Groups[1].Value;
@@ -57,7 +64,7 @@ namespace fxlint.MQL4Cases
             foreach (Match match in matches)
             {
                 var indicatorName = match.Groups[1].Value.Trim();
-                if (indicatorName.Trim('"') == name)
+                if (indicatorName.Trim('"') == name || indicatorName == "indicatorFileName")
                     continue;
 
                 Regex _checkPattern = new Regex("temp ?= ?iCustom\\([^,]+,[^,]+, ?" + indicatorName + ",[^)]+\\);[\r\n\t ]*if ?\\(GetLastError");
