@@ -11,6 +11,7 @@ namespace fxlint
         static MQL4Lint()
         {
             _cases.Add(new NoCustomIndicatorCheck());
+            _cases.Add(new ObjectDeletionCheck());
         }
 
         public static string[] GetWarnings(string code, string name)
