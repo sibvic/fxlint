@@ -12,14 +12,6 @@ namespace fxlint.LuaCases
             return code;
         }
 
-        class Core
-        {
-            public string app_path()
-            {
-                return @"C:\Program Files (x86)\Candleworks\FXTS2";
-            }
-        }
-
         public string[] GetWarnings(string code, string name)
         {
             List<string> errors = new List<string>();
