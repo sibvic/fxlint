@@ -13,7 +13,7 @@ namespace fxlint
 
             IEnumerable<string> files = Directory
                 .GetFiles(options.Path, "*.*", SearchOption.AllDirectories)
-                .Where(file => file.EndsWith(".lua", StringComparison.InvariantCultureIgnoreCase) || file.EndsWith(".mq4", StringComparison.InvariantCultureIgnoreCase))
+                .Where(file => IsValidExtension(options, Path.GetExtension(file)))
                 .ToList();
             if (options.File != null)
                 files = files.Where(f => Path.GetFileName(f) == options.File);
@@ -39,6 +39,11 @@ namespace fxlint
                 }
                 File.WriteAllLines(Path.Combine(options.Path, "fxlint_log.txt"), log.ToArray());
             }
+        }
+
+        private static bool IsValidExtension(Options options, string extension)
+        {
+            return options.Extensions.Contains(extension.ToLower());
         }
 
         private static void PrintWarnings(string file, string[] warnings)
