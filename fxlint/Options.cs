@@ -12,6 +12,8 @@ namespace fxlint
     {
         public Mode Mode { get; set; } = Mode.Scan;
 
+        public string Path { get; set; } = ".";
+
         public string File { get; set; }
 
         public static Options Parse(string[] args)
@@ -22,6 +24,11 @@ namespace fxlint
             {
                 switch (option.Current)
                 {
+                    case "--path":
+                        if (!option.MoveNext())
+                            throw new ArgumentException("Path need to be specified");
+                        options.Path = (string)option.Current;
+                        break;
                     case "--fix":
                         options.Mode = Mode.Fix;
                         break;

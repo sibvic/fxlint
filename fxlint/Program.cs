@@ -12,7 +12,7 @@ namespace fxlint
             var options = Options.Parse(args);
 
             IEnumerable<string> files = Directory
-                .GetFiles(".", "*.*", SearchOption.AllDirectories)
+                .GetFiles(options.Path, "*.*", SearchOption.AllDirectories)
                 .Where(file => file.EndsWith(".lua", StringComparison.InvariantCultureIgnoreCase) || file.EndsWith(".mq4", StringComparison.InvariantCultureIgnoreCase))
                 .ToList();
             if (options.File != null)
@@ -37,7 +37,7 @@ namespace fxlint
                         log.AddRange(warnings);
                     }
                 }
-                File.WriteAllLines("fxlint_log.txt", log.ToArray());
+                File.WriteAllLines(Path.Combine(options.Path, "fxlint_log.txt"), log.ToArray());
             }
         }
 
