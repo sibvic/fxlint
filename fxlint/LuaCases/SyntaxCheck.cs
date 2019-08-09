@@ -30,6 +30,9 @@ namespace fxlint.LuaCases
                 {
                     env.dochunk(code, "test.lua");
                 }
+                catch (InvalidOperationException)
+                {
+                }
                 catch (LuaParseException ex)
                 {
                     errors.Add("Syntax error: " + ex.Message);
