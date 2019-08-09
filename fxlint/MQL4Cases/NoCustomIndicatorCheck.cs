@@ -64,7 +64,7 @@ namespace fxlint.MQL4Cases
             foreach (Match match in matches)
             {
                 var indicatorName = match.Groups[1].Value.Trim();
-                if (indicatorName.Trim('"') == name || indicatorName == "indicatorFileName")
+                if (indicatorName.Trim('"') == name || indicatorName == "indicatorFileName" || indicatorName == "IndicatorName")
                     continue;
 
                 Regex _checkPattern = new Regex("temp ?= ?iCustom\\([^,]+,[^,]+, ?" + indicatorName + ",[^)]+\\);[\r\n\t ]*if ?\\(GetLastError");
