@@ -61,6 +61,9 @@ namespace fxlint
                             throw new ArgumentException("File need to be specified");
                         options.File = (string)option.Current;
                         break;
+                    case "--help":
+                        PrintHelp();
+                        break;
                 }
             }
             return options;
