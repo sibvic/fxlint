@@ -26,7 +26,7 @@ namespace fxlint
             }
         }
 
-        [Option("optput-file", Default = "fxlint_log.txt", Required = false, HelpText = "Output file name")]
+        [Option("output-file", Default = "fxlint_log.txt", Required = false, HelpText = "Output file name")]
         public string OutputFile { get; set; }
 
         [Option("indicore-root", Required = false, HelpText = "Indicore root path")]
