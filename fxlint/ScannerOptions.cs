@@ -25,5 +25,8 @@ namespace fxlint
                 Extensions.AddRange(value.Split(";", StringSplitOptions.RemoveEmptyEntries));
             }
         }
+
+        [Option("optput-file", Default = "fxlint_log.txt", Required = false, HelpText = "Output file name")]
+        public string OutputFile { get; set; }
     }
 }

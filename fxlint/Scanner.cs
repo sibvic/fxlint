@@ -29,7 +29,7 @@ namespace fxlint
                     log.AddRange(warnings);
                 }
             }
-            File.WriteAllLines(Path.Combine(options.Path, "fxlint_log.txt"), log.ToArray());
+            File.WriteAllLines(options.OutputFile, log.ToArray());
             return Task.FromResult(0);
         }
 
