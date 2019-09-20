@@ -5,6 +5,12 @@ namespace fxlint.LuaCases
 {
     class SyntaxCheck : ILintCheck
     {
+        private readonly string _indicoreRootPath;
+        public SyntaxCheck(string indicoreRootPath)
+        {
+            _indicoreRootPath = indicoreRootPath ?? "";
+        }
+
         public string Fix(string code, string name)
         {
             return code;
@@ -15,7 +21,7 @@ namespace fxlint.LuaCases
             List<string> errors = new List<string>();
             try
             {
-                ExtensionProfileLoader.LoadFromCode(code, name, "");
+                ExtensionProfileLoader.LoadFromCode(code, name, _indicoreRootPath);
             }
             catch (FXTS2ExtensionException ex)
             {

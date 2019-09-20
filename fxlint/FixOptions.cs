@@ -14,5 +14,8 @@ namespace fxlint
 
         [Option("extensions", Required = false, HelpText = "Extensions to fix.")]
         public List<string> Extensions { get; set; }
+
+        [Option("indicore-root", Required = false, HelpText = "Indicore root path")]
+        public string IndicoreRootPath { get; set; }
     }
 }

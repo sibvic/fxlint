@@ -9,9 +9,11 @@ namespace fxlint
     class Scanner
     {
         ScannerOptions _options;
+        LuaLint _lua;
         public Task<int> StartAsync(ScannerOptions options)
         {
             _options = options;
+            _lua = new LuaLint(options.IndicoreRootPath);
 
             IEnumerable<string> files = Directory
                 .GetFiles(options.Path, "*.*", SearchOption.AllDirectories)
@@ -42,7 +44,7 @@ namespace fxlint
             }
         }
 
-        private static string[] GetWarnings(string file)
+        private string[] GetWarnings(string file)
         {
             string code;
             try
@@ -57,7 +59,7 @@ namespace fxlint
             switch (Path.GetExtension(file).ToUpper())
             {
                 case ".LUA":
-                    return LuaLint.GetWarnings(code, fileName);
+                    return _lua.GetWarnings(code, fileName);
                 case ".MQ4":
                     return MQL4Lint.GetWarnings(code, fileName);
             }

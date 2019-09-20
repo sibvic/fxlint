@@ -5,8 +5,8 @@ namespace fxlint
 {
     class LuaLint
     {
-        static List<ILintCheck> _cases = new List<ILintCheck>();
-        static LuaLint()
+        List<ILintCheck> _cases = new List<ILintCheck>();
+        public LuaLint(string indicoreRootPath)
         {
             _cases.Add(new OldTradingTimeCheck());
             _cases.Add(new InRangeUse());
@@ -17,10 +17,10 @@ namespace fxlint
             _cases.Add(new NoPrecisionForOscillator());
             _cases.Add(new OldExitFunction());
             _cases.Add(new NoNonOptimizableParameters());
-            _cases.Add(new SyntaxCheck());
+            _cases.Add(new SyntaxCheck(indicoreRootPath));
         }
 
-        public static string[] GetWarnings(string code, string name)
+        public string[] GetWarnings(string code, string name)
         {
             List<string> warnings = new List<string>();
             foreach (var lintCase in _cases)
@@ -33,7 +33,7 @@ namespace fxlint
             return warnings.ToArray();
         }
 
-        static bool ContainsNoAllowTrade(string code)
+        bool ContainsNoAllowTrade(string code)
         {
             if (!code.Contains("strategy:name("))
                 return false;
@@ -43,7 +43,7 @@ namespace fxlint
             return code.Contains("terminal:execute");
         }
 
-        static string FixNoAllowTrade(string code)
+        string FixNoAllowTrade(string code)
         {
             var lines = new List<string>();
             lines.AddRange(code.Split('\n'));
@@ -58,7 +58,7 @@ namespace fxlint
             return code;
         }
 
-        internal static string FixCode(string code, string name)
+        internal string FixCode(string code, string name)
         {
             var fixedCode = code;
             if (ContainsNoAllowTrade(fixedCode))

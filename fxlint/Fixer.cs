@@ -9,10 +9,13 @@ namespace fxlint
     class Fixer
     {
         FixOptions _options;
+        LuaLint _lua;
 
         public Task<int> StartAsync(FixOptions options)
         {
             _options = options;
+            _lua = new LuaLint(_options.IndicoreRootPath);
+
             IEnumerable<string> files = Directory
                 .GetFiles(_options.Path, "*.*", SearchOption.AllDirectories)
                 .Where(file => IsValidExtension(Path.GetExtension(file)))
@@ -26,7 +29,7 @@ namespace fxlint
             return Task.FromResult(1);
         }
 
-        static void FixFile(string file)
+        void FixFile(string file)
         {
             string code;
             try
@@ -44,7 +47,7 @@ namespace fxlint
                 {
                     case ".LUA":
                         {
-                            var newCode = LuaLint.FixCode(code, fileName);
+                            var newCode = _lua.FixCode(code, fileName);
                             if (newCode != code)
                                 File.WriteAllText(file, newCode);
                         }
