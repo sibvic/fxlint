@@ -21,7 +21,8 @@ namespace fxlint.LuaCases
             List<string> errors = new List<string>();
             try
             {
-                ExtensionProfileLoader.LoadFromCode(code, name, _indicoreRootPath);
+                var profile = ExtensionProfileLoader.LoadFromCode(code, name, _indicoreRootPath);
+                profile.Init();
             }
             catch (FXTS2ExtensionException ex)
             {
