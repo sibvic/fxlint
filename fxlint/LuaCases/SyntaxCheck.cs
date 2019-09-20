@@ -1,7 +1,5 @@
-﻿using Neo.IronLua;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using ProfitRobots.FXTS2LuaExecuter;
 
 namespace fxlint.LuaCases
 {
@@ -15,23 +13,13 @@ namespace fxlint.LuaCases
         public string[] GetWarnings(string code, string name)
         {
             List<string> errors = new List<string>();
-            using (Lua lua = new Lua())
+            try
             {
-                dynamic env = lua.CreateEnvironment();
-                try
-                {
-                    env.dochunk(code, "test.lua");
-                }
-                catch (InvalidOperationException)
-                {
-                }
-                catch (LuaParseException ex)
-                {
-                    errors.Add("Syntax error: " + ex.Message);
-                }
-                catch (LuaRuntimeException)
-                {
-                }
+                ExtensionProfileLoader.LoadFromCode(code, name, "");
+            }
+            catch (FXTS2ExtensionException ex)
+            {
+                errors.Add("Syntax error: " + ex.Message);
             }
             return errors.ToArray();
         }

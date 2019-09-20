@@ -1,0 +1,3 @@
+[submodule "FXTS2LuaExecuter"]
+	path = FXTS2LuaExecuter
+	url = https://github.com/sibvic/FXTS2LuaExecuter.git
