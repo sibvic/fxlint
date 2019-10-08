@@ -10,6 +10,7 @@ namespace fxlint
         [Option("path", Required = true, HelpText = "Path with files to fix.")]
         public string Path { get; set; }
 
+        #region Extensions
         public List<string> Extensions { get; set; }
 
         [Option("extensions", Default = ".lua;.mq4", Required = false, HelpText = "Extensions to fix.")]
@@ -25,6 +26,25 @@ namespace fxlint
                 Extensions.AddRange(value.Split(";", StringSplitOptions.RemoveEmptyEntries));
             }
         }
+        #endregion
+
+        #region Excluded
+        public List<string> Excluded { get; set; }
+
+        [Option("exclude", Required = false, HelpText = "List of excluded check separated by ';'.")]
+        public string ExcludeString
+        {
+            get
+            {
+                return "";
+            }
+            set
+            {
+                Excluded = new List<string>();
+                Excluded.AddRange(value.Split(";", StringSplitOptions.RemoveEmptyEntries));
+            }
+        }
+        #endregion
 
         [Option("output-file", Default = "fxlint_log.txt", Required = false, HelpText = "Output file name")]
         public string OutputFile { get; set; }

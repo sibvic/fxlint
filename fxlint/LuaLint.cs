@@ -6,18 +6,28 @@ namespace fxlint
     class LuaLint
     {
         List<ILintCheck> _cases = new List<ILintCheck>();
-        public LuaLint(string indicoreRootPath)
+        public LuaLint(string indicoreRootPath, List<string> excludedChecks)
         {
-            _cases.Add(new OldTradingTimeCheck());
-            _cases.Add(new InRangeUse());
-            _cases.Add(new MissingIndicatorCheck());
-            _cases.Add(new ConvertTimeTZServer());
-            _cases.Add(new OldPraseTime());
-            _cases.Add(new OldInRange());
-            _cases.Add(new NoPrecisionForOscillator());
-            _cases.Add(new OldExitFunction());
-            _cases.Add(new NoNonOptimizableParameters());
-            _cases.Add(new SyntaxCheck(indicoreRootPath));
+            if (!excludedChecks.Contains("OldTradingTimeCheck"))
+                _cases.Add(new OldTradingTimeCheck());
+            if (!excludedChecks.Contains("InRangeUse"))
+                _cases.Add(new InRangeUse());
+            if (!excludedChecks.Contains("MissingIndicatorCheck"))
+                _cases.Add(new MissingIndicatorCheck());
+            if (!excludedChecks.Contains("ConvertTimeTZServer"))
+                _cases.Add(new ConvertTimeTZServer());
+            if (!excludedChecks.Contains("OldPraseTime"))
+                _cases.Add(new OldPraseTime());
+            if (!excludedChecks.Contains("OldInRange"))
+                _cases.Add(new OldInRange());
+            if (!excludedChecks.Contains("NoPrecisionForOscillator"))
+                _cases.Add(new NoPrecisionForOscillator());
+            if (!excludedChecks.Contains("OldExitFunction"))
+                _cases.Add(new OldExitFunction());
+            if (!excludedChecks.Contains("NoNonOptimizableParameters"))
+                _cases.Add(new NoNonOptimizableParameters());
+            if (!excludedChecks.Contains("indicoreRootPath"))
+                _cases.Add(new SyntaxCheck(indicoreRootPath));
         }
 
         public string[] GetWarnings(string code, string name)

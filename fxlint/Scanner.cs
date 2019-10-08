@@ -13,7 +13,7 @@ namespace fxlint
         public Task<int> StartAsync(ScannerOptions options)
         {
             _options = options;
-            _lua = new LuaLint(options.IndicoreRootPath);
+            _lua = new LuaLint(options.IndicoreRootPath, options.Excluded);
 
             IEnumerable<string> files = Directory
                 .GetFiles(options.Path, "*.*", SearchOption.AllDirectories)

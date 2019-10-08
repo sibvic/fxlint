@@ -14,7 +14,7 @@ namespace fxlint
         public Task<int> StartAsync(FixOptions options)
         {
             _options = options;
-            _lua = new LuaLint(_options.IndicoreRootPath);
+            _lua = new LuaLint(_options.IndicoreRootPath, new List<string>());
 
             IEnumerable<string> files = Directory
                 .GetFiles(_options.Path, "*.*", SearchOption.AllDirectories)
