@@ -7,7 +7,7 @@ namespace fxlint
     [Verb("scan", HelpText = "Scan files.")]
     class ScannerOptions
     {
-        [Option("path", Required = true, HelpText = "Path with files to fix.")]
+        [Option("path", Required = true, HelpText = "Path to the folder with files or path to file for scan.")]
         public string Path { get; set; }
 
         #region Extensions
@@ -29,7 +29,7 @@ namespace fxlint
         #endregion
 
         #region Excluded
-        public List<string> Excluded { get; set; }
+        public List<string> Excluded { get; set; } = new List<string>();
 
         [Option("exclude", Required = false, HelpText = "List of excluded check separated by ';'.")]
         public string ExcludeString
