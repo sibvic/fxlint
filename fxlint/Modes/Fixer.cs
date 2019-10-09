@@ -16,12 +16,20 @@ namespace fxlint
             _options = options;
             _lua = new LuaLint(_options.IndicoreRootPath, new List<string>());
 
-            IEnumerable<string> files = Directory
-                .GetFiles(_options.Path, "*.*", SearchOption.AllDirectories)
-                .Where(file => IsValidExtension(Path.GetExtension(file)))
-                .ToList();
-            if (_options.File != null)
-                files = files.Where(f => Path.GetFileName(f) == _options.File);
+            IEnumerable<string> files;
+            if (File.Exists(options.Path))
+            {
+                var list = new List<string>();
+                files = list;
+                list.Add(options.Path);
+            }
+            else
+            {
+                files = Directory
+                    .GetFiles(options.Path, "*.*", SearchOption.AllDirectories)
+                    .Where(file => IsValidExtension(Path.GetExtension(file)))
+                    .ToList();
+            }
             foreach (var file in files)
             {
                 FixFile(file);

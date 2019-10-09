@@ -6,10 +6,7 @@ namespace fxlint
     [Verb("fix", HelpText = "Fix files.")]
     class FixOptions
     {
-        [Option("file", Required = false, HelpText = "File to fix.")]
-        public string File { get; set; }
-
-        [Option("path", Required = true, HelpText = "Path with files to fix.")]
+        [Option("path", Required = true, HelpText = "Path to folder with files or path to file for fix.")]
         public string Path { get; set; }
 
         [Option("extensions", Required = false, HelpText = "Extensions to fix.")]
