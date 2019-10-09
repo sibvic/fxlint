@@ -67,7 +67,7 @@ namespace fxlint.LuaCases
             foreach (Match match in matches)
             {
                 var streamName = match.Groups["streamName"].Value;
-                if (!code.Contains(streamName + ":setPrecision"))
+                if (!streamName.Trim().StartsWith("--") && !code.Contains(streamName + ":setPrecision"))
                 {
                     names.Add(streamName);
                 }
