@@ -16,5 +16,7 @@ namespace fxlint.LuaCases
         {
             return _pattern.Replace(code, " not InRange(now, OpenTime, CloseTime) ");
         }
+
+        public string Id => "OldTradingTimeCheck";
     }
 }

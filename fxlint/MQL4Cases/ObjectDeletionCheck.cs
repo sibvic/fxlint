@@ -18,5 +18,7 @@ namespace fxlint.MQL4Cases
 
             return new string[] { "No ObjectsDeleteAll. Some object may be left undeleted." };
         }
+
+        public string Id => "ObjectDeletionCheck";
     }
 }

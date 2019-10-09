@@ -59,5 +59,7 @@ end
                 index = code.IndexOf("function Update");
             return code.Insert(index, InRangeCode);
         }
+
+        public string Id => "InRangeUse";
     }
 }

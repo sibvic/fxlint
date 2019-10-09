@@ -42,5 +42,7 @@ end");
                 return new string[] { "Old version of ParseTime" };
             return new string[] { };
         }
+
+        public string Id => "OldPraseTime";
     }
 }

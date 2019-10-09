@@ -136,5 +136,7 @@ end";
                 return new string[] { "Old version of Exit" };
             return new string[] { };
         }
+
+        public string Id => "OldExitFunction";
     }
 }

@@ -75,5 +75,7 @@ namespace fxlint.LuaCases
 
             return names;
         }
+
+        public string Id => "NoPrecisionForOscillator";
     }
 }

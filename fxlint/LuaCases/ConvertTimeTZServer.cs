@@ -17,5 +17,7 @@ namespace fxlint.LuaCases
                 return new string[] { "Convertion of now to TZ_SERVER" };
             return new string[] { };
         }
+
+        public string Id => "ConvertTimeTZServer";
     }
 }

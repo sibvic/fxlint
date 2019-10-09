@@ -1,39 +1,40 @@
 using fxlint.LuaCases;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace fxlint
 {
     class LuaLint
     {
         List<ILintCheck> _cases = new List<ILintCheck>();
+        List<string> _excludedChecks;
         public LuaLint(string indicoreRootPath, List<string> excludedChecks)
         {
-            if (!excludedChecks.Contains("OldTradingTimeCheck"))
-                _cases.Add(new OldTradingTimeCheck());
-            if (!excludedChecks.Contains("InRangeUse"))
-                _cases.Add(new InRangeUse());
-            if (!excludedChecks.Contains("MissingIndicatorCheck"))
-                _cases.Add(new MissingIndicatorCheck());
-            if (!excludedChecks.Contains("ConvertTimeTZServer"))
-                _cases.Add(new ConvertTimeTZServer());
-            if (!excludedChecks.Contains("OldPraseTime"))
-                _cases.Add(new OldPraseTime());
-            if (!excludedChecks.Contains("OldInRange"))
-                _cases.Add(new OldInRange());
-            if (!excludedChecks.Contains("NoPrecisionForOscillator"))
-                _cases.Add(new NoPrecisionForOscillator());
-            if (!excludedChecks.Contains("OldExitFunction"))
-                _cases.Add(new OldExitFunction());
-            if (!excludedChecks.Contains("NoNonOptimizableParameters"))
-                _cases.Add(new NoNonOptimizableParameters());
-            if (!excludedChecks.Contains("indicoreRootPath"))
-                _cases.Add(new SyntaxCheck(indicoreRootPath));
+            _excludedChecks = excludedChecks;
+            _cases.Add(new OldTradingTimeCheck());
+            _cases.Add(new InRangeUse());
+            _cases.Add(new MissingIndicatorCheck());
+            _cases.Add(new ConvertTimeTZServer());
+            _cases.Add(new OldPraseTime());
+            _cases.Add(new OldInRange());
+            _cases.Add(new NoPrecisionForOscillator());
+            _cases.Add(new OldExitFunction());
+            _cases.Add(new NoNonOptimizableParameters());
+            _cases.Add(new SyntaxCheck(indicoreRootPath));
+        }
+
+        public IEnumerable<string> Checks 
+        {
+            get
+            {
+                return _cases.Select(c => c.Id);
+            }
         }
 
         public string[] GetWarnings(string code, string name)
         {
             List<string> warnings = new List<string>();
-            foreach (var lintCase in _cases)
+            foreach (var lintCase in _cases.Where(c => !_excludedChecks.Contains(c.Id)))
             {
                 var lintWarnings = lintCase.GetWarnings(code, name);
                 warnings.AddRange(lintWarnings);
@@ -73,7 +74,7 @@ namespace fxlint
             var fixedCode = code;
             if (ContainsNoAllowTrade(fixedCode))
                 fixedCode = FixNoAllowTrade(fixedCode);
-            foreach (var lintCase in _cases)
+            foreach (var lintCase in _cases.Where(c => !_excludedChecks.Contains(c.Id)))
             {
                 fixedCode = lintCase.Fix(fixedCode, name);
             }

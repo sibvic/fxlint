@@ -144,5 +144,7 @@ namespace fxlint.LuaCases
             }
             return missingChecks.Select(s => "Missing indicator assert for " + s).ToArray();
         }
+
+        public string Id => "MissingIndicatorCheck";
     }
 }

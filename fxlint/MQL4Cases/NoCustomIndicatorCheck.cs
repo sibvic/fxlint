@@ -73,5 +73,7 @@ namespace fxlint.MQL4Cases
             }
             return added;
         }
+
+        public string Id => "NoCustomIndicatorCheck";
     }
 }

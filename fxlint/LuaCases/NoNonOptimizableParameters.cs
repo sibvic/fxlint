@@ -55,5 +55,7 @@ namespace fxlint.LuaCases
             }
             return false;
         }
+
+        public string Id => "NoNonOptimizableParameters";
     }
 }

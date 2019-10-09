@@ -30,5 +30,7 @@ namespace fxlint.LuaCases
             }
             return errors.ToArray();
         }
+
+        public string Id => "SyntaxCheck";
     }
 }
