@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace fxlint.MQL4Cases
+﻿namespace fxlint.MQL4Cases
 {
-    class ObjectDeletionCheck : ILintCheck
+    public class ObjectDeletionCheck : ILintCheck
     {
         public string Fix(string code, string name)
         {
